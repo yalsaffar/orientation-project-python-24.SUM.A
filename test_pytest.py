@@ -266,3 +266,69 @@ def test_update_experience():
     
     
     
+def test_social_media():
+    '''
+    Add a new social media entry and then get all social media links. 
+    
+    Check that it returns the new social media entry in that list.
+    '''
+    example_social_media = {
+        "linkedin": "https://www.linkedin.com/in/example",
+        "github": "https://github.com/example",
+        "twitter": "https://twitter.com/example",
+        "portfolio": "https://www.example.com",
+        "email": "example@example.com",
+        "phone": "+123456789"
+    }
+
+    post_response = app.test_client().post('/resume/socialmedia', json=example_social_media)
+    assert post_response.status_code == 201
+    new_social_media_id = post_response.json['id']
+
+    get_response = app.test_client().get('/resume/socialmedia')
+    assert get_response.status_code == 200
+
+    found = False
+    for social_media in get_response.json:
+        if social_media['id'] == new_social_media_id:
+            for key, value in example_social_media.items():
+                assert social_media[key] == value
+            found = True
+            break
+
+    assert found, "New social media entry was not found in the returned list"
+
+
+def test_delete_social_media():
+    '''
+    Add a new social media entry and then delete it by index.
+    '''
+    prior_social_media = app.test_client().get('resume/socialmedia').json
+    example_social_media = {
+        "linkedin": "https://www.linkedin.com/in/example",
+        "github": "https://github.com/example",
+        "twitter": "https://twitter.com/example",
+        "portfolio": "https://www.example.com",
+        "email": "example@example.com",
+        "phone": "+123456789"
+    }
+
+    item_id = app.test_client().post('/resume/socialmedia', json=example_social_media).json['id']
+
+    response = app.test_client().delete(f'/resume/socialmedia?index={item_id}')
+    assert response.json['message'] == "Successfully deleted"
+    assert prior_social_media == app.test_client().get('resume/socialmedia').json
+
+
+def test_post_social_media_missing_fields():
+    """Test POST request to /resume/socialmedia with missing fields.
+    POST request with missing 'linkedin' and 'github' fields.
+    """
+    incomplete_social_media = {
+        "twitter": "https://twitter.com/example",
+        "portfolio": "https://www.example.com",
+        "email": "example@example.com",
+        "phone": "+123456789"
+    }
+    response = app.test_client().post('/resume/socialmedia', json=incomplete_social_media)
+    assert response.status_code == 400

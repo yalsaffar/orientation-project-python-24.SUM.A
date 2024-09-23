@@ -2,7 +2,7 @@
 Flask Application
 '''
 from flask import Flask, jsonify, request
-from models import Experience, Education, Skill
+from models import Experience, Education, Skill, SocialMedia
 from utils import load_data, save_data, generate_id, correct_spelling
 
 data = load_data('data/data.json')
@@ -212,3 +212,75 @@ def spelling_check():
 
     # return the original and corrected text
     return jsonify({"before": text, "after": corrected_text})
+
+@app.route('/resume/socialmedia', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def social_media():
+    '''
+    Handle social media requests
+    '''
+    if request.method == 'GET':
+        index = request.args.get("index")
+        if index is not None:
+            if not index.isnumeric():
+                return jsonify({"error": "Index must be a number"}), 400
+            if 0 < int(index) <= len(data["social_media"]):
+                # ids in data.json are 1 indexed
+                return jsonify(data["social_media"][int(index) - 1]), 200
+            return jsonify({"error": 'Index not in range'}), 400
+
+        # if no index, return all social media links
+        return jsonify([sm.__dict__ for sm in data['social_media']]), 200
+
+    if request.method == 'POST':
+        required_fields = ['linkedin', 'github', 'twitter', 'portfolio', 'email', 'phone']
+
+        if not request.json:
+            return jsonify({'error': 'No data provided'}), 400
+
+        missing_fields = [field for field in required_fields if field not in request.json]
+        if missing_fields:
+            return jsonify({'error': 'Missing required fields'}), 400
+
+        new_id = generate_id(data, 'social_media')
+        new_social_media_data = request.json
+        new_social_media_data['id'] = new_id
+        new_social_media = SocialMedia(**new_social_media_data)
+
+        data['social_media'].append(new_social_media)
+        save_data('data/data.json', data)
+
+        return jsonify({'id': new_id}), 201
+
+    if request.method == 'PUT':
+        index = request.args.get("index")
+        if index is None:
+            return jsonify({"error": 'Index not provided'}), 400
+        if not index.isnumeric():
+            return jsonify({"error": "Index must be a number"}), 400
+        
+        index = int(index)
+        if not (0 < index <= len(data["social_media"])):
+            return jsonify({"error": 'Index not in range'}), 400
+
+        updated_social_media_data = request.json
+        updated_social_media_data['id'] = index
+        updated_social_media = SocialMedia(**updated_social_media_data)
+        data["social_media"][index - 1] = updated_social_media
+        save_data('data/data.json', data)
+        return jsonify(data["social_media"][index - 1]), 200
+
+    if request.method == 'DELETE':
+        index = request.args.get("index")
+        if index is not None:
+            if not index.isnumeric():
+                return jsonify({"error": "Index must be a number"}), 400
+            
+            if 0 < int(index) <= len(data["social_media"]):
+                # ids in data.json are 1 indexed
+                data["social_media"].pop(int(index) - 1)
+                save_data('data/data.json', data)
+                return jsonify({"message": "Successfully deleted"}), 200
+
+        return jsonify({"error": 'Invalid Index'}), 400
+
+    return jsonify({'error': 'Method not allowed'}), 405

@@ -2,7 +2,7 @@ import json
 
 from spellchecker import SpellChecker
 
-from models import Experience, Education, Skill
+from models import Experience, Education, Skill, SocialMedia
 
 def load_data(filename):
     """
@@ -15,7 +15,8 @@ def load_data(filename):
         return {
             "experience": [Experience(**exp) for exp in data.get('experience', [])], 
             "education": [Education(**edu) for edu in data.get('education', [])],
-            "skill": [Skill(**skl) for skl in data.get('skill', [])]
+            "skill": [Skill(**skl) for skl in data.get('skill', [])],
+            "social_media": [SocialMedia(**sm) for sm in data.get('social_media', [])]
         }
     except FileNotFoundError:
         print(f"File {filename} not found.")
@@ -33,7 +34,8 @@ def save_data(filename, data):
             json_data = {
                 "experience": [exp.__dict__ for exp in data['experience']],
                 "education": [edu.__dict__ for edu in data['education']],
-                "skill": [skl.__dict__ for skl in data['skill']]
+                "skill": [skl.__dict__ for skl in data['skill']],
+                "social_media": [sm.__dict__ for sm in data['social_media']]
             }
             json.dump(json_data, file, indent=4)
     except IOError as e:

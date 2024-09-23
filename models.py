@@ -43,3 +43,16 @@ class Skill:
     name: str
     proficiency: str
     logo: str
+
+@dataclass
+class SocialMedia:
+    '''
+    Social Media Class
+    '''
+    linkedin: str = field(default="")
+    github: str = field(default="")
+    twitter: str = field(default="")
+    portfolio: str = field(default="")
+    email: str = field(default="")
+    phone: str = field(default="")
+    id: int = field(default=1)
