@@ -333,8 +333,7 @@ def test_post_social_media_missing_fields():
     response = app.test_client().post('/resume/socialmedia', json=incomplete_social_media)
     assert response.status_code == 400
 
-# test personal info
-# name, address, year of birth, id
+
 def test_personal_info():
     '''
     Add a new personal info entry and then get all personal info entries. 
@@ -395,7 +394,6 @@ def test_update_personal_info():
     '''
     Test the updating functionality of personal info
     '''
-    # Post a new personal info entry
     example_personal_info = {
         "name": "John Doe",
         "address": "123 Example St, Example City, EX 12345",
@@ -408,16 +406,13 @@ def test_update_personal_info():
         "year_of_birth": "2001"
     }
 
-    # Post a new personal info entry
     post_response = app.test_client().post('/resume/personalinfo', json=example_personal_info)
     assert post_response.status_code == 201
     new_personal_info_id = post_response.json['id']
 
-    # Update the personal info entry
     update_response = app.test_client().put(f'/resume/personalinfo?index={new_personal_info_id}', json=updated_personal_info)
     assert update_response.status_code == 200
 
-    # Check if the personal info entry was updated correctly
     get_response = app.test_client().get('/resume/personalinfo')
     personal_infos = get_response.json
     found = False
