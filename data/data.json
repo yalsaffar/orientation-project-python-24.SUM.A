@@ -6,7 +6,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing Python Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 1
         },
         {
@@ -15,7 +15,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing Python Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 2
         },
         {
@@ -24,7 +24,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing Python Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 3
         },
         {
@@ -33,7 +33,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing JavaScript Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 4
         },
         {
@@ -42,7 +42,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing JavaScript Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 5
         },
         {
@@ -51,7 +51,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing Python Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 6
         },
         {
@@ -60,7 +60,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing Python Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 7
         },
         {
@@ -69,7 +69,7 @@
             "start_date": "October 2022",
             "end_date": "Present",
             "description": "Writing JavaScript Code",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 8
         }
     ],
@@ -80,7 +80,7 @@
             "start_date": "September 2019",
             "end_date": "July 2022",
             "grade": "80%",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 1
         },
         {
@@ -89,7 +89,7 @@
             "start_date": "August 2020",
             "end_date": "May 2023",
             "grade": "85%",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 2
         },
         {
@@ -98,7 +98,7 @@
             "start_date": "October 2022",
             "end_date": "August 2024",
             "grade": "86%",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 3
         },
         {
@@ -107,7 +107,7 @@
             "start_date": "October 2022",
             "end_date": "August 2024",
             "grade": "86%",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 4
         },
         {
@@ -116,7 +116,7 @@
             "start_date": "October 2022",
             "end_date": "August 2024",
             "grade": "86%",
-            "logo": "static/logo/example-logo.png",
+            "logo": "static/logos/example-logo.png",
             "id": 5
         }
     ],
@@ -124,12 +124,12 @@
         {
             "name": "Python",
             "proficiency": "1-2 Years",
-            "logo": "static/logo/example-logo.png"
+            "logo": "static/logos/example-logo.png"
         },
         {
             "name": "Java",
             "proficiency": "3 Years",
-            "logo": "static/logo/example-logo.png"
+            "logo": "static/logos/example-logo.png"
         }
     ]
 }

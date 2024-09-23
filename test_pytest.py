@@ -29,7 +29,7 @@ def test_experience():
         "start_date": "October 2022",
         "end_date": "Present",
         "description": "Writing JavaScript Code",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
 
     post_response = app.test_client().post('/resume/experience', json=example_experience)
@@ -61,7 +61,7 @@ def test_delete_experience():
         "start_date": "October 2022",
         "end_date": "Present",
         "description": "Writing JavaScript Code",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
     item_id = app.test_client().post('/resume/experience',
                                      json=example_experience).json['id']
@@ -83,7 +83,7 @@ def test_education():
         "start_date": "October 2022",
         "end_date": "August 2024",
         "grade": "86%",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
     post_response = app.test_client().post('/resume/education', json=example_education)
     assert post_response.status_code == 201
@@ -115,7 +115,7 @@ def test_delete_education():
         "start_date": "October 2022",
         "end_date": "August 2024",
         "grade": "86%",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
     item_id = app.test_client().post('/resume/education',
                                      json=example_education).json['id']
@@ -133,7 +133,7 @@ def test_post_education_missing_fields():
         "course": "Engineering",
         "school": "UBC",
         "start_date": "October 2024",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
     response = app.test_client().post('/resume/education', json=incomplete_education)
     assert response.status_code == 400
@@ -179,7 +179,7 @@ def test_skill():
     example_skill = {
         "name": "JavaScript",
         "proficiency": "2-4 years",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
 
     item_id = app.test_client().post('/resume/skill',
@@ -199,7 +199,7 @@ def test_delete_skill():
     example_skill = {
         "name": "Go",
         "proficiency": "1 year",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
 
     item_id = app.test_client().post('/resume/skill',
@@ -228,7 +228,7 @@ def test_update_experience():
         "start_date": "October 2022",
         "end_date": "Present",
         "description": "Writing JavaScript Code",
-        "logo": "static/logo/example-logo.png"
+        "logo": "static/logos/example-logo.png"
     }
 
     updated_experience = {
