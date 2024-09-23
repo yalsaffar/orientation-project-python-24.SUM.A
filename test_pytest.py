@@ -332,3 +332,101 @@ def test_post_social_media_missing_fields():
     }
     response = app.test_client().post('/resume/socialmedia', json=incomplete_social_media)
     assert response.status_code == 400
+
+# test personal info
+# name, address, year of birth, id
+def test_personal_info():
+    '''
+    Add a new personal info entry and then get all personal info entries. 
+    
+    Check that it returns the new personal info entry in that list.
+    '''
+    example_personal_info = {
+        "name": "John Doe",
+        "address": "123 Example St, Example City, EX 12345",
+        "year_of_birth": "2000"
+    }
+
+    post_response = app.test_client().post('/resume/personalinfo', json=example_personal_info)
+    assert post_response.status_code == 201
+    new_personal_info_id = post_response.json['id']
+
+    get_response = app.test_client().get('/resume/personalinfo')
+    assert get_response.status_code == 200
+
+    found = False
+    for personal_info in get_response.json:
+        if personal_info['id'] == new_personal_info_id:
+            for key, value in example_personal_info.items():
+                assert personal_info[key] == value
+            found = True
+            break
+
+    assert found, "New personal info entry was not found in the returned list"
+
+def test_delete_personal_info():
+    '''
+    Add a new personal info entry and then delete it by index.
+    '''
+    prior_personal_info = app.test_client().get('resume/personalinfo').json
+    example_personal_info = {
+        "name": "John Doe",
+        "address": "123 Example St, Example City, EX 12345",
+        "year_of_birth": "2000"
+    }
+
+    item_id = app.test_client().post('/resume/personalinfo', json=example_personal_info).json['id']
+
+    response = app.test_client().delete(f'/resume/personalinfo?index={item_id}')
+    assert response.json['message'] == "Successfully deleted"
+    assert prior_personal_info == app.test_client().get('resume/personalinfo').json
+
+def test_post_personal_info_missing_fields():
+    '''Test POST request to /resume/personalinfo with missing fields.
+    POST request with missing 'address' and 'year_of_birth' fields.
+    '''
+    incomplete_personal_info = {
+        "name": "John Doe"
+    }
+    response = app.test_client().post('/resume/personalinfo', json=incomplete_personal_info)
+    assert response.status_code == 400
+
+def test_update_personal_info():
+    '''
+    Test the updating functionality of personal info
+    '''
+    # Post a new personal info entry
+    example_personal_info = {
+        "name": "John Doe",
+        "address": "123 Example St, Example City, EX 12345",
+        "year_of_birth": "2000"
+    }
+
+    updated_personal_info = {
+        "name": "Jane Doe",
+        "address": "456 Example St, Example City, EX 12345",
+        "year_of_birth": "2001"
+    }
+
+    # Post a new personal info entry
+    post_response = app.test_client().post('/resume/personalinfo', json=example_personal_info)
+    assert post_response.status_code == 201
+    new_personal_info_id = post_response.json['id']
+
+    # Update the personal info entry
+    update_response = app.test_client().put(f'/resume/personalinfo?index={new_personal_info_id}', json=updated_personal_info)
+    assert update_response.status_code == 200
+
+    # Check if the personal info entry was updated correctly
+    get_response = app.test_client().get('/resume/personalinfo')
+    personal_infos = get_response.json
+    found = False
+
+    for personal_info in personal_infos:
+        if personal_info['id'] == new_personal_info_id:
+            for key, value in updated_personal_info.items():
+                assert personal_info[key] == value
+            found = True
+            break
+
+    assert found, "Updated personal info entry was not found in the returned list"

@@ -2,7 +2,7 @@
 Flask Application
 '''
 from flask import Flask, jsonify, request
-from models import Experience, Education, Skill, SocialMedia
+from models import Experience, Education, PersonalInfo, Skill, SocialMedia
 from utils import load_data, save_data, generate_id, correct_spelling
 
 data = load_data('data/data.json')
@@ -284,3 +284,67 @@ def social_media():
         return jsonify({"error": 'Invalid Index'}), 400
 
     return jsonify({'error': 'Method not allowed'}), 405
+
+@app.route('/resume/personalinfo', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def personal_info():
+    if request.method == 'GET':
+        index = request.args.get("index")
+        if index is not None:
+            if not index.isnumeric():
+                return jsonify({"error": "Index must be a number"}), 400
+            if 0 < int(index) <= len(data["personal_info"]):
+                # ids in data.json are 1 indexed
+                return jsonify(data["personal_info"][int(index) - 1]), 200
+            return jsonify({"error": 'Index not in range'}), 400
+
+        # if no index, return all personal info
+        return jsonify([pi.__dict__ for pi in data['personal_info']]), 200
+    if request.method == 'POST':
+        required_fields = ['name', 'address', 'year_of_birth']
+
+        if not request.json:
+            return jsonify({'error': 'No data provided'}), 400
+
+        missing_fields = [field for field in required_fields if field not in request.json]
+        if missing_fields:
+            return jsonify({'error': 'Missing required fields'}), 400
+
+        new_id = generate_id(data, 'personal_info')
+        new_personal_info_data = request.json
+        new_personal_info_data['id'] = new_id
+        new_personal_info = PersonalInfo(**new_personal_info_data)
+
+        data['personal_info'].append(new_personal_info)
+        save_data('data/data.json', data)
+
+        return jsonify({'id': new_id}), 201
+    if request.method == 'PUT':
+        index = request.args.get("index")
+        if index is None:
+            return jsonify({"error": 'Index not provided'}), 400
+        if not index.isnumeric():
+            return jsonify({"error": "Index must be a number"}), 400
+        
+        index = int(index)
+        if not (0 < index <= len(data["personal_info"])):
+            return jsonify({"error": 'Index not in range'}), 400
+
+        updated_personal_info_data = request.json
+        updated_personal_info_data['id'] = index
+        updated_personal_info = PersonalInfo(**updated_personal_info_data)
+        data["personal_info"][index - 1] = updated_personal_info
+        save_data('data/data.json', data)
+        return jsonify(data["personal_info"][index - 1]), 200
+    if request.method == 'DELETE':
+        index = request.args.get("index")
+        if index is not None:
+            if not index.isnumeric():
+                return jsonify({"error": "Index must be a number"}), 400
+            
+            if 0 < int(index) <= len(data["personal_info"]):
+                # ids in data.json are 1 indexed
+                data["personal_info"].pop(int(index) - 1)
+                save_data('data/data.json', data)
+                return jsonify({"message": "Successfully deleted"}), 200
+
+        return jsonify({"error": 'Invalid Index'}), 400

@@ -56,3 +56,14 @@ class SocialMedia:
     email: str = field(default="")
     phone: str = field(default="")
     id: int = field(default=1)
+
+
+@dataclass
+class PersonalInfo:
+    '''
+    Personal Info Class
+    '''
+    name: str = field(default="")
+    address: str = field(default="")
+    year_of_birth: str = field(default="")
+    id: int = field(default=1)
